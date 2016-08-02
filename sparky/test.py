@@ -96,11 +96,13 @@ class Structures:
         print(home)
         print(bin)
 
+    """
+        using deque as a queued pipe
+        from collections import deque
+
+    """
     def queue(self):
 
-        """
-            using deque as a queued pipe
-        """
         from collections import deque
         q = deque(maxlen=3)
         q.append(1)
@@ -111,6 +113,7 @@ class Structures:
 
     """
         find largest and smallest N items with heapq
+        import heapq
     """
 
     def lagest_smallest(self):
@@ -152,6 +155,12 @@ class Structures:
         print(heapq.heappop(a)[-1])
         print(heapq.heappop(a)[-1])
 
+
+    """
+        from collections import defaultdict
+        from collections import OrderedDict
+
+    """
 
     def keys_and_dictionary(self):
 
@@ -201,6 +210,10 @@ class Structures:
         print( self.dictionary_a.items() - self.dictionary_b.items())
 
 
+
+    """
+        slice
+    """
     def slice(self):
         share = slice(20,32)
         cost = slice(40,48)
@@ -208,6 +221,10 @@ class Structures:
         cost = int(self.slicestr[share]) * float(self.slicestr[cost])
         print(cost)
 
+
+    """
+        from collections import Counter
+    """
     def counter(self):
 
         from collections import Counter
@@ -219,7 +236,301 @@ class Structures:
         print(b)
 
 
-    
+
+    """
+        Sorting a List of Dictionaries by a Common Key
+
+        from operator import itemgetter
+    """
+
+    def sort_list(self):
+
+        rows = [
+            {'fname': 'Brian', 'lname': 'Jones', 'uid': 1003},
+            {'fname': 'David', 'lname': 'Beazley', 'uid': 1002},
+            {'fname': 'John', 'lname': 'Cleese', 'uid': 1001},
+            {'fname': 'Big', 'lname': 'Jones', 'uid': 1004}
+        ]
+
+
+        from operator import itemgetter
+
+        rows_by_fname = sorted(rows, key=itemgetter('fname'))
+        rows_by_uid = sorted(rows,key=itemgetter('uid'))
+
+        print(rows_by_fname)
+        print(rows_by_uid)
+
+        rows_by_lname_fname = sorted(rows, key=itemgetter('lname', 'fname'))
+        print(rows_by_lname_fname)
+
+        vmin = min(rows, key=lambda s: s['uid'])
+        print(vmin)
+
+        vmax = max(rows, key=lambda s: s['uid'])
+        print(vmax)
+
+        #you can also sort by class field
+        #see example on reference
+
+    """
+        group by
+
+        from itertools import groupby
+        from operator import itemgetter
+    """
+    def group_by(self):
+
+        rows = [
+            {'address': '5412 N CLARK', 'date': '07/01/2012'},
+            {'address': '5148 N CLARK', 'date': '07/04/2012'},
+            {'address': '5800 E 58TH', 'date': '07/02/2012'},
+            {'address': '2122 N CLARK', 'date': '07/03/2012'},
+            {'address': '5645 N RAVENSWOOD', 'date': '07/02/2012'},
+            {'address': '1060 W ADDISON', 'date': '07/02/2012'},
+            {'address': '4801 N BROADWAY', 'date': '07/01/2012'},
+            {'address': '1039 W GRANVILLE', 'date': '07/04/2012'},
+        ]
+
+        from operator import itemgetter
+        from itertools import groupby
+
+
+        rows.sort(key=itemgetter('date'))
+
+        for date, items in groupby(rows, key=itemgetter('date')):
+            print(date)
+            for i in items:
+                print(' '*10, i)
+
+    def filtering(self):
+
+        mylist = [1, 4, -5, 10, -7, 2, 3, -1]
+        print([n for n in mylist if n > 0])
+        print([n for n in mylist if n < 0])
+
+        import math
+
+        print([math.sqrt(n) for n in mylist if n > 0])
+
+    def cool_stuff(self):
+
+        mylist = [1, 4, -5, 10, -7, 2, 3, -1]
+        print([n if n > 0 else 0 for n in mylist])
+        print([n if n < 0 else 0 for n in mylist])
+
+
+        mydict = {
+            'ACME': 45.23,
+            'AAPL': 612.78,
+            'IBM': 205.55,
+            'HPQ': 37.20,
+            'FB': 10.75
+        }
+
+        print({key:value for key, value in mydict.items() if value > 200})
+
+        p1 = {'FB', 'IBM'}
+        print({key:value for key, value in mydict.items() if key in p1})
+
+        print( dict((key, value) for key, value in mydict.items() if value > 200) )
+
+        # if any(t < 0 for t in x):
+        #     pass
+
+    """
+        named tuple ( less space )
+        from collections import namedtuple
+
+    """
+
+    def named_tuple(self):
+
+        from collections import namedtuple
+
+        subscriber = namedtuple('Subscriber', ['addr', 'joined'])
+        sub = subscriber('foo@bar.com', '08/02/2016')
+
+        print(sub)
+        print(sub.addr)
+        print(sub.joined)
+
+        ###########
+        #replace
+        ###########
+        Stock = namedtuple('Stock', ['name', 'shares', 'price', 'date', 'time'])
+        # Create a prototype instance
+        stock_prototype = Stock('', 0, 0.0, None, None)
+
+        s = {'name': 'ACME', 'shares': 100, 'price': 123.45}
+        print(stock_prototype._replace(**s))
+
+    """
+        Combining Multiple Mappings into a Single
+        from collections import ChainMap
+
+    """
+    def combin_maps(self):
+
+        from collections import ChainMap
+
+        a = {'x': 1, 'z': 3 }
+        b = {'y': 2, 'z': 4 }
+
+        c = ChainMap(a,b)
+        print(c)
+        print(c['z'])
+
+        merge = dict(b)
+        merge.update(a)
+
+        print(merge)
+
+
+class StringText:
+
+    def __init__(self):
+        self.line = 'asdf fjdk; afed, fjek,asdf, foo'
+        self.line1 = 'spam.txt'
+        self.line2 = 'http://www.python.org'
+        self.arr_files = ['Dat1.csv', 'Dat2.csv', 'config.ini', 'foo.py']
+        self.addresses = [
+            '5412 N CLARK ST',
+            '1060 W ADDISON ST',
+            '1039 W GRANVILLE AVE',
+            '2122 N CLARK ST',
+            '4802 N BROADWAY',
+        ]
+
+    """
+        split line and using re
+
+        import re
+    """
+    def split(self):
+        import re
+        print(re.split(r'[;,\s]\s*', self.line))
+
+        #:r (none capture)
+        print(re.split(r'(?:;|,|\s)\s*', self.line))
+
+
+        # if any(t < 0 for t in x):
+
+    def text_start_end_with(self):
+
+        print(self.line1.endswith('.txt'))
+        print(self.line2.startswith('http'))
+
+        import os
+        filenames = os.listdir('/Users/tokluo/IdeaProjects/PysparkProject/sparky/')
+        print([ name for name in filenames if name.endswith('.py')])
+
+        #or use match
+        import re
+        print(re.match('http:|https:|ftp:', self.line2))
+
+    """
+        Matching Strings Using Shell Wildcard Patterns
+    """
+
+    def match_wildcard(self):
+
+        from fnmatch import fnmatch, fnmatchcase
+        print(fnmatch('foo.txt', '*.txt'))
+        print(fnmatch('foo.txt', '?oo.txt'))
+        print(fnmatch('Dat45.txt', 'Dat[0-9]*'))
+
+        print([ filename for filename in self.arr_files if fnmatch(filename, 'Dat*.csv')])
+
+        print([address for address in self.addresses if fnmatch(address, '* ST')])
+
+    """
+        simple and complex string search/match
+    """
+
+    def string_match(self):
+
+        str = 'hello world, this is an awesome string'
+        print(str.find('awesome'))
+        import re
+        print( re.match(r'.+ world', str) )
+
+        #if the pattern will be used more than once
+        pattern = re.compile(r'.+ world')
+        print(pattern.match(str))
+
+        print(re.findall(r'awesome|this', str))
+
+        #using group and match
+
+        datapat = re.compile(r'(\d+)/(\d+)/(\d+)')
+        m = datapat.match('11/27/2016')
+        print(m.group(0))
+        print(m.group(1))
+        print(m.group(2))
+        print(m.group(3))
+
+        date, month, year = m.groups()
+        print(date, month, year)
+
+        str2 = 'Today is 11/27/2012. PyCon starts 3/13/2013.'
+        m = datapat.findall(str2)
+        print(m)
+
+
+    """
+        search and replace
+    """
+
+    def search_replace(self):
+
+        str = 'yeah, but no, but yeah, but no, but yeah'
+
+        print( str.replace('yeah', 'ya'))
+
+        text = 'Today is 11/27/2012. PyCon starts 3/13/2013.'
+        import re
+        print(re.sub(r'(\d+)/(\d+)/(\d+)', r'\1-\2-\3', text))
+
+        datapat = re.compile(r'(\d+)/(\d+)/(\d+)')
+        print(datapat.sub(r'\1-\2-\3', text))
+
+        #case insenstive flaf
+        text = 'UPPER PYTHON, lower python, Mixed Python'
+        print(re.findall('python', text, flags=re.IGNORECASE))
+        print(re.sub('python', 'snake', text, flags=re.IGNORECASE))
+
+        #match shortest
+        text = 'Computer say "no" and phone says "yes"'
+        datapat = re.compile(r'\"(.*?)\"')
+        print( datapat.findall(text))
+
+    """
+        Normalizing unicode in text
+
+        import unicodedata
+
+        The first argument to normalize() specifies how you want the string normalized.
+        NFC means that characters should be fully composed (i.e., use a single code point if possible).
+        NFD means that characters should be fully decomposed with the use of combining char‐ acters.
+    """
+
+    def normalise(self):
+
+        import unicodedata
+        print(unicodedata.normalize('NFC', 'Spicy Jalape\u00f1o'))
+
+        t1 = unicodedata.normalize('NFD', 'Spicy Jalape\u00f1o')
+        print(''.join(c for c in t1 if not unicodedata.combining(c)))
+
+
+    """
+        Stripping Unwanted Characters from Strings
+    """
+    def striping_unwants(self):
+        pass
+
 
 if __name__ == '__main__':
 
@@ -230,6 +541,18 @@ if __name__ == '__main__':
     structure.keys_and_dictionary()
     structure.slice()
     structure.counter()
+    structure.sort_list()
+    structure.group_by()
+    structure.filtering()
+    structure.cool_stuff()
+    structure.named_tuple()
+    structure.combin_maps()
 
-
+    stringtext = StringText()
+    stringtext.split()
+    stringtext.text_start_end_with()
+    stringtext.match_wildcard()
+    stringtext.string_match()
+    stringtext.search_replace()
+    stringtext.normalise()
 
