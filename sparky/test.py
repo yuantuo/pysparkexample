@@ -1,4 +1,4 @@
-class Unpacking:
+class Structures:
 
     def unpack(self):
 
@@ -67,39 +67,84 @@ class Unpacking:
         print(bin)
 
 
+    def queue(self):
+
+        """
+            using deque as a queued pipe
+        """
+        from collections import deque
+        q = deque(maxlen=3)
+        q.append(1)
+        q.append(2)
+        q.append(3)
+        q.append(4)
+        print(q)
+
+    """
+        find largest and smallest N items with heapq
+    """
+
+    def lagest_smallest(self):
+        import heapq
+
+        num = [1,3,4,5,6,24,-3,0,-5,34,5]
+
+        print(heapq.nlargest(2,num))
+        print(heapq.nsmallest(1,num))
 
 
+        """
+            some nested struc [{},{}]
+        """
+        stru = [
+                    {'name': 'foo', 'price': 12},
+                    {'name': 'bar', 'price': 23},
+                    {'name': 'fred', 'price': 0.4},
+                    {'name': 'wilma', 'price': -3},
+                ]
+
+        cheap = heapq.nsmallest(1, stru, key=lambda s:s['price'])
+        expen = heapq.nlargest(1, stru, key=lambda s:s['price'])
+
+        print("%f, %f" %  (cheap[0]['price'],expen[0]['price']))
+
+        heap = list(num)
+        heapq.heapify(heap)
+        print(heap)
+        print(heapq.heappop(heap))
+        print(heapq.heappop(heap))
+        print(heapq.heappop(heap))
+
+        #or you can use min() or max() if you are only interested in 1
+        print(min(num))
+        print(max(num))
+
+        a = []
+        heapq.heappush(a,(3,0,'e'))
+        heapq.heappush(a,(1,0,'H'))
+        heapq.heappush(a,(4,0,'l'))
+        heapq.heappush(a,(7,0,'0'))
+        heapq.heappush(a,(6,0,'l'))
+
+        print(heapq.heappop(a)[-1])
+        print(heapq.heappop(a)[-1])
+        print(heapq.heappop(a)[-1])
+        print(heapq.heappop(a)[-1])
+        print(heapq.heappop(a)[-1])
 
 
-
+    def keys_maps(self):
+        pass
 
 
 if __name__ == '__main__':
 
-    unpacking = Unpacking()
-    unpacking.unpack()
+    structure = Structures()
+    structure.unpack()
+    structure.queue()
+    structure.lagest_smallest()
+    structure.keys_maps()
 
 
 
-
-
-
-# from collections import deque
-#
-# def search(lines, pattern, history=5):
-#     previous_lines = deque(maxlen=history)
-#     for line in lines:
-#         if pattern in line:
-#             yield line, previous_lines
-#     previous_lines.append(line)
-#
-# # Example use on a file
-# if __name__ == '__main__':
-#
-#     with open('/Users/tokluo/IdeaProjects/PysparkProject/sparky/dataFrame.py') as f:
-#         for line, prevlines in search(f, 'parser', 5):
-#             for pline in prevlines:
-#                 print(pline)
-#             print(line)
-#             print('-'*20)
 
