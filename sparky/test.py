@@ -1,10 +1,30 @@
 class Unpacking:
 
     def unpack(self):
-
         p = (4,5)
         x,y = p
-        print("%s, %s" % x, y)
+        print("%s, %s" % (x, y))
+
+        p = ['foo', 'bar', 123, (2016,8,2)]
+        a,b,c,d = p
+        #if number of unpack item is not correct is will give ValueError
+        print("%s,%s,%d,%d,%d,%d" % (a,b,c,d[0],d[1],d[2]))
+
+        #unpack a string
+        p = 'Hello'
+        a,b,c,d,e = p
+        print(a)
+
+        p = ['foo', 'bar', 123, (2016,8,2)]
+        #disgard vaiable with _
+        _,b,c,_ = p
+        print(b) #print _ return nothing
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
