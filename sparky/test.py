@@ -887,6 +887,34 @@ class FileIO:
         #writing to file not already exsits
         # with open('somefile', 'xt') as f:
 
+    def usingIoString(self):
+        import io
+        s = io.StringIO()
+        s.write('Io string hello world')
+
+        print(s.getvalue())
+
+    def compressed_file(self):
+        import gzip
+        import bz2
+
+        with gzip.open('somefile.gz', 'rt') as f:
+            text = f.read()
+
+        with bz2.open('somefile.bz2', 'rt') as f:
+            text = f.read()
+
+    def read_parical(self):
+
+        from functools import partial
+
+        RECORD_SIZE = 32
+        with open ('somefile.data', 'rb') as f:
+            records = iter(partial(f.read, RECORD_SIZE), b'')
+            for r in records:
+                print(r)
+
+
 
 
 if __name__ == '__main__':
@@ -948,3 +976,4 @@ if __name__ == '__main__':
 
     fileio = FileIO()
     fileio.openfile()
+    fileio.usingIoString()
