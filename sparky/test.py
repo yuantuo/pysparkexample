@@ -524,13 +524,67 @@ class StringText:
         t1 = unicodedata.normalize('NFD', 'Spicy Jalape\u00f1o')
         print(''.join(c for c in t1 if not unicodedata.combining(c)))
 
+        a = 'pýtĥöñ is awesome\n'
+        b = unicodedata.normalize('NFD', a)
+        print(b.encode('ascii', 'ignore').decode('ascii'))
+
 
     """
         Stripping Unwanted Characters from Strings
     """
     def striping_unwants(self):
-        pass
 
+        import re
+        s = '    hello world \n'
+        print(s.strip())
+        s = '--------hello world +++++++'
+        print(s.strip('-+'))
+
+        #stripping does not apply to any text in the middle of a string
+        s = '** Hello     World----'
+        print( re.sub('\s+', ' ', s.strip('*-').strip()))
+
+        #################################
+        ##string line with opening file
+        #################################
+
+        #with open(filename) as f:
+        #    lines = (line.strip() for line in f)
+        #    for line in lines:
+
+
+    def aligning_text(self):
+
+        text = 'hello world'
+        print(text.ljust(20))
+        print(text.rjust(20))
+        print(text.center(20))
+        print(text.rjust(20,'='))
+
+        print(format(text, '>20'))
+        print(format(text, '^20'))
+
+        print(format(text, '=>20'))
+        print(format(text, '*^20'))
+        print('{:>10s} {:>10s}'.format('hello', 'world'))
+
+        parts =  ['Is', 'Chicago', 'Not', 'Chicago?']
+        print(' '.join(parts))
+        print(','.join(parts))
+
+        a = 'Is Chicago'
+        b = 'Not Chicago?'
+
+        print('{} {}'.format(a,b))
+
+        #############################
+        #join string mix with digits
+        #############################
+        data = ['ACME', 50, 9.4]
+        print(','.join(str(w) for w in data ))
+
+        s = '{name} has {n} messages'
+        print(s.format(name='foo', n=100))
 
 if __name__ == '__main__':
 
@@ -555,4 +609,5 @@ if __name__ == '__main__':
     stringtext.string_match()
     stringtext.search_replace()
     stringtext.normalise()
-
+    stringtext.striping_unwants()
+    stringtext.aligning_text()
