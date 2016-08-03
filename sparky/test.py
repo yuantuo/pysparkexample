@@ -1,4 +1,7 @@
+from dateutil.rrule import *
+
 class Structures:
+
 
     def __init__(self):
         self.string = 'Hello'
@@ -386,7 +389,6 @@ class Structures:
 
         print(merge)
 
-
 class StringText:
 
     def __init__(self):
@@ -581,10 +583,311 @@ class StringText:
         #join string mix with digits
         #############################
         data = ['ACME', 50, 9.4]
-        print(','.join(str(w) for w in data ))
+        print(' '.join(str(w) for w in data ))
 
         s = '{name} has {n} messages'
         print(s.format(name='foo', n=100))
+
+    def byte_string(self):
+
+        data = b'Hello world'
+        print(data.split())
+        print(data.replace(b'Hello', b'yoyooy'))
+
+        data = b'FOO:BAR,SPAM'
+        import re
+        print( re.split(b'[:,]', data))
+        print(data.decode('ascii'))
+
+class Numbers:
+    def __init__(self):
+        pass
+
+    def arounding(self):
+
+        #around to even number
+        print( round(1.15, 1))
+        print( round(1.25, 1))
+        print( round(1627731, -3))
+        print(format(1.2343, '0.2f'))
+        print( 'value is {:0.3f}'.format(1.23434))
+
+    """
+        using
+        from decimal import Decimal
+    """
+    def decimals(self):
+        from decimal import Decimal
+
+        a = Decimal('4.2')
+        b = Decimal('2.1')
+        print(a + b)
+
+    def sums(self):
+
+        data = [1.23e+18, 1, -1.23e+18]
+        print('error on small with large number')
+        print(sum(data))
+
+        print('To fix this use math module')
+        import math
+        print( math.fsum(data) )
+
+
+    def formats(self):
+        x = 1234.56789
+
+        print(format(x, '0.2f'))
+        print(format(x, '>10.1f'))
+        print(format(x, '<10.1f'))
+        print(format(x, '^10.1f'))
+
+        print('convert into binary, octal, hex')
+        x = 1234
+        print( bin(x))
+        print( oct(x))
+        print( hex(x))
+
+    def complexmath(self):
+        a = complex(2,4)
+        b = 3 - 5j
+
+        import cmath
+        print( cmath.sin(a))
+        print( cmath.cos(b))
+
+
+    """
+        from fractions import Fractions
+    """
+    def fractionmath(self):
+
+        from fractions import Fraction
+
+        a = Fraction(5,4)
+        b = Fraction(7, 16)
+        print(float(a))
+
+        c = a + b
+        print(c)
+
+        #inf, nan using float
+        print( float('inf') )
+        print( float('-inf') )
+        print( float('nan') )
+
+
+    """
+        import numpy as np
+    """
+    def numarray(self):
+
+        import numpy as np
+        ax = np.array([1, 2, 3, 4])
+        print( ax * 2 )
+        print( ax + 10 )
+        print( np.sqrt(ax) )
+
+        a = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]])
+
+        print(a[0])
+        print(a[1:3,1:4])
+
+    """
+        import random
+    """
+    def randomvalues(self):
+
+        import random
+        values = [1,2,3,4,5,6,7]
+
+        print(random.choice(values))
+        print(random.sample(values, 2))
+        random.shuffle(values)
+        print(values)
+        print(random.randint(0,10))
+        print(random.random())
+
+    """
+        from datetime import timedelta, datetime
+    """
+
+    def timeformat(self):
+        from datetime import timedelta, datetime
+        #days
+        a = timedelta(2018,8,3)
+        print(a)
+        print(a.days)
+
+        now = datetime.now()
+        print(now)
+
+        today = datetime.today()
+        print(today)
+        print(today + timedelta(minutes=10))
+
+        #days
+        a = timedelta(2018,8,3)
+        b = timedelta(2016,8,1)
+        print( (a-b).days)
+
+        #datetime
+        a = datetime(2018,8,3)
+        b = datetime(2018,7,1)
+        print( (a-b).days)
+
+        #months
+        from dateutil.relativedelta import relativedelta
+        a = datetime.today()
+        print( a + relativedelta(months=+1) )
+
+        print(a + relativedelta(weekday=FR))
+        print(a + relativedelta(weekday=FR(-1)))
+
+
+        #string to datetime
+        text = '2018-08-03'
+        y = datetime.strptime(text, '%Y-%m-%d')
+        print(y)
+
+        print( datetime.strftime(y, '%A %B %d, %Y') )
+
+
+        #timezone
+        from pytz import timezone
+        central = timezone('US/Central')
+        print(central.localize(y))
+
+class Iterors:
+    def __init__(self):
+        pass
+
+    def custome_itr(self):
+
+        root = Node(0)
+        child1 = Node(1)
+        child2 = Node(2)
+
+        root.add_child(child1)
+        root.add_child(child2)
+
+        for ch in root:
+            print(ch)
+
+
+    def frange(self, start, stop, incr):
+        x = start
+        while x < stop:
+            yield x
+            x += incr
+
+    """
+        drop while
+        from itertools import dropwhile
+    """
+
+    def dropwhile(self):
+
+        from itertools import dropwhile
+
+        with open('/etc/passwd') as f:
+            for line in dropwhile(lambda line: line.startswith('#'), f):
+                print(line)
+
+    """
+        permutations
+        from itertools import permutations
+    """
+
+    def permutations_ltr(self):
+
+        from itertools import permutations, combinations_with_replacement
+
+        items = ['a', 'b', 'c']
+
+        for p in permutations(items):
+            print(p)
+
+        for p in permutations(items,2):
+            print(p)
+
+        for p in combinations_with_replacement(items,3):
+            print(p)
+
+    def using_zip_ltr(self):
+
+        xpts = [1,5,6,8,0]
+        ypts = [101,78,96,45,74, 887]
+
+        for x, y in zip(xpts, ypts):
+            print(x,y)
+
+
+        from itertools import zip_longest
+
+        for i in zip_longest(xpts, ypts, fillvalue=0):
+            print(i)
+
+        c = ['x','y','z']
+
+        for i in zip_longest(xpts, ypts, c, fillvalue=0):
+            print(i)
+
+
+        from itertools import chain
+
+        for i in chain(xpts,ypts):
+            print(i)
+
+class Node:
+    def __init__(self, value):
+        self._value = value
+        self._children = []
+
+    def __repr__(self):
+        return 'Node({!r})'.format(self._value)
+
+    def add_child(self, node):
+        self._children.append(node)
+
+    def __iter__(self):
+        return iter(self._children)
+
+class FileIO:
+    def __init__(self):
+        pass
+
+    def openfile(self):
+
+        with open('/etc/passwd') as f:
+            print(f.read())
+
+
+        with open('/Users/tokluo/IdeaProjects/PysparkProject/bin/test.txt', 'rt', encoding='ascii', errors='ignore') as f:
+            print(f.read())
+
+
+        print('ACME', 50, 95.4, sep=',', end='@@')
+
+        row = ('ACME', 50, 91.5)
+        print(*row, sep='|')
+
+        with open('/Users/tokluo/IdeaProjects/PysparkProject/bin/some.bin', 'wb') as f:
+            f.write(b'hello world')
+
+        #reading/writing binary
+        with open('/Users/tokluo/IdeaProjects/PysparkProject/bin/some.bin', 'rb') as f:
+            print(f.read())
+
+        with open('/Users/tokluo/IdeaProjects/PysparkProject/bin/some.bin', 'rb') as f:
+            data = f.read()
+            print(data.decode('utf-8'))
+
+
+        #writing to file not already exsits
+        # with open('somefile', 'xt') as f:
+
+
 
 if __name__ == '__main__':
 
@@ -611,3 +914,37 @@ if __name__ == '__main__':
     stringtext.normalise()
     stringtext.striping_unwants()
     stringtext.aligning_text()
+    stringtext.byte_string()
+
+    numbers = Numbers()
+    numbers.arounding()
+    numbers.decimals()
+    numbers.sums()
+    numbers.formats()
+    numbers.complexmath()
+    numbers.fractionmath()
+    numbers.numarray()
+    numbers.randomvalues()
+    numbers.timeformat()
+
+
+    itr = Iterors()
+    itr.custome_itr()
+    for x in itr.frange(0,5,0.5):
+        print(x)
+
+    print('************')
+    a = itr.frange(0,5,0.5)
+    print(next(a))
+    print(next(a))
+    print(next(a))
+    print(next(a))
+    print(next(a))
+    print(next(a))
+
+    itr.dropwhile()
+    itr.permutations_ltr()
+    itr.using_zip_ltr()
+
+    fileio = FileIO()
+    fileio.openfile()
