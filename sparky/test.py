@@ -1,4 +1,5 @@
 from dateutil.rrule import *
+from pprint import pprint
 
 class Structures:
 
@@ -752,7 +753,6 @@ class Numbers:
 
         print( datetime.strftime(y, '%A %B %d, %Y') )
 
-
         #timezone
         from pytz import timezone
         central = timezone('US/Central')
@@ -839,6 +839,13 @@ class Iterors:
         for i in chain(xpts,ypts):
             print(i)
 
+    def withindex(self):
+
+        list = ['a', 'b', 'c']
+
+        for idx, val in enumerate(list):
+            print(idx, val)
+
 class Node:
     def __init__(self, value):
         self._value = value
@@ -914,7 +921,243 @@ class FileIO:
             for r in records:
                 print(r)
 
+    def do_path(self):
 
+        import os
+        import sys
+
+        tempath = '/Users/tokluo/Data/data.csv'
+
+        print(os.path.basename(tempath))
+        print(os.path.dirname(tempath))
+
+        print(os.path.join('tmp', 'data', os.path.basename(tempath)))
+
+        tempath2 = '~/foobar/file'
+        print (os.path.expanduser(tempath2))
+
+        print(os.path.exists(tempath))
+        print(os.path.isfile('/etc/passwd'))
+        print(os.path.isdir('/etc/passwd'))
+
+        import time
+        print( time.ctime(os.path.getctime('/etc/passwd')))
+
+        name = os.listdir('/usr/local')
+        print(name)
+
+        filenames = [filename for filename in os.listdir('/usr/local') if os.path.isfile(os.path.join('/usr', 'local', filename))]
+        print(filenames)
+
+        dirname = {filedir for filedir in os.listdir('/usr/local') if os.path.isdir(os.path.join('/usr', 'local', filedir))}
+        print(dirname)
+
+        print(sys.getfilesystemencoding())
+
+    def temparyfile(self):
+
+        from tempfile import TemporaryFile, NamedTemporaryFile
+
+        with NamedTemporaryFile('w+t', prefix='toktmp_', suffix='.txt', dir='/tmp') as f:
+            f.write('foobar')
+            f.write('wilma')
+            f.seek(0)
+            print(f.name)
+            print(f.read())
+
+    def serializingobj(self):
+        import pickle
+        data = 'some cool stuff'
+        data2= 'the morning is good'
+
+        with open('/tmp/seri', 'wb') as f:
+            pickle.dump(data, f)
+            pickle.dump(data2, f)
+
+
+        with open('/tmp/seri', 'rb') as f:
+            data = pickle.load(f)
+            data = pickle.load(f)
+            print(data)
+
+class Encodeing:
+
+    def __init__(self):
+        pass
+
+    def openfile(self):
+
+        from collections import namedtuple
+        import os, csv
+        path = os.path.join('/Users', 'tokluo', 'IdeaProjects', 'PysparkProject', 'bin', 'stock.csv')
+        print(path)
+        with open(path, 'rt') as f:
+            f_csv = csv.reader(f)
+            headings = next(f_csv)
+            print(headings)
+            Row = namedtuple('Row', headings)
+            for r in f_csv:
+                row =Row(*r)
+                print(row)
+
+
+        with open(path, 'rt') as f:
+            f_csv = csv.DictReader(f)
+            for r in f_csv:
+                print(r)
+                print(r['Date'])
+
+    def writecsv(self):
+
+        import os, csv
+
+        path = os.path.join('/Users', 'tokluo', 'IdeaProjects', 'PysparkProject', 'bin', 'stock2.csv')
+
+        headers = ['Symbol', 'Price', 'Date', 'Time', 'Change', 'Volume']
+        rows = [{'Symbol':'AA', 'Price':39.48, 'Date':'6/11/2007',
+                 'Time':'9:36am', 'Change':-0.18, 'Volume':181800},
+                {'Symbol':'AIG', 'Price': 71.38, 'Date':'6/11/2007',
+                 'Time':'9:36am', 'Change':-0.15, 'Volume': 195500},
+                {'Symbol':'AXP', 'Price': 62.58, 'Date':'6/11/2007',
+                 'Time':'9:36am', 'Change':-0.46, 'Volume': 935000}]
+
+        with open (path, 'wt') as f:
+            f_csv = csv.DictWriter(f, headers)
+            f_csv.writeheader()
+            f_csv.writerows(rows)
+
+        #using panda is good module to convert csv pandas.read_csv()
+
+    def readjson(self):
+
+        import json
+        data = {
+
+            'name': 'ACME',
+            'share': 100,
+            'price': 542.34
+        }
+
+        json_str = json.dumps(data)
+        pprint(json_str)
+
+        json_obj = json.loads(json_str)
+        pprint(json_obj)
+
+        from urllib.request import urlopen
+        import json
+
+        u = urlopen('http://mysafeinfo.com/api/data?list=englishmonarchs&format=json')
+        resp = json.loads(u.read().decode('utf-8'))
+        # pprint(resp)
+
+        # iteritems removed in python3 using items
+        for i in resp:
+            pprint(i['cty'])
+            for attr, item in i.items():
+                print(attr, item)
+
+    def readingxml(self):
+        from urllib.request import urlopen
+        from xml.etree.ElementTree import parse
+
+        u = urlopen('http://planet.python.org/rss20.xml')
+        doc = parse(u)
+
+        for item in doc.iterfind('channel/item'):
+            title = item.findtext('title')
+            date = item.findtext('pubDate')
+            link = item.findtext('link')
+
+            print(title)
+            print(date)
+            print(link)
+
+
+    def parse_and_remove(self, filename, path):
+
+        print('********')
+        from xml.etree.ElementTree import iterparse
+
+        path_parts = path.split('/')
+        doc = iterparse(filename, ('start', 'end')) # Skip the root element
+        print(path_parts)
+        next(doc)
+        tag_stack = []
+        elem_stack = []
+        for event, elem in doc:
+            print(event)
+            print(elem)
+            if event == 'start':
+                tag_stack.append(elem.tag)
+                elem_stack.append(elem)
+            elif event == 'end':
+                if tag_stack == path_parts:
+                    yield elem
+                    elem_stack[-2].remove(elem)
+                try:
+                    tag_stack.pop()
+                    elem_stack.pop()
+                except IndexError as e:
+                    print(e)
+                    pass
+
+
+    def writexml(self):
+
+        s = {"foo":"bar", "fred":"wlima","num":123}
+
+        from xml.etree.ElementTree import Element, tostring
+
+        elem = Element('Tok')
+
+        for key, value in s.items():
+
+            child = Element(key)
+            child.text = str(value)
+            elem.append(child)
+        elem.set('_id', 'thisid')
+        pprint(tostring(elem))
+
+    def hexadeimal(self):
+
+        s = b'hello'
+        import binascii
+        h = binascii.b2a_hex(s)
+        print(h)
+        print(binascii.a2b_hex(h))
+
+        import base64
+        h = base64.b16encode(s)
+        print(h)
+        print(base64.b16decode(h))
+
+class Functions:
+    def __init__(self):
+        pass
+
+    def passargs(self,first, *rest):
+        print((first + sum(rest)) / (1 + len(rest)))
+
+    def keywords(self, *tuple, **args):
+        print(tuple)
+        print(args)
+        print(args['foo'])
+
+
+    def cooloneline(self):
+        add = lambda x,y: x+y
+        print(add(2,3))
+
+        names = ['Foo', 'Bar', 'Fred', 'Wilma']
+
+        print(sorted(names, key=lambda name: name.split()[-1].lower()))
+
+        #using for loop in lambda
+
+        func = [lambda x, n=n: x+n for n in range(5)]
+        for f in func:
+            print(f(1))
 
 
 if __name__ == '__main__':
@@ -973,7 +1216,37 @@ if __name__ == '__main__':
     itr.dropwhile()
     itr.permutations_ltr()
     itr.using_zip_ltr()
+    itr.withindex()
+
 
     fileio = FileIO()
     fileio.openfile()
     fileio.usingIoString()
+    fileio.do_path()
+    fileio.temparyfile()
+    fileio.serializingobj()
+
+    encoding = Encodeing()
+    encoding.openfile()
+    encoding.writecsv()
+    encoding.readjson()
+    encoding.readingxml()
+
+    # from collections import Counter
+    # potholes_by_zip = Counter()
+    # data = encoding.parse_and_remove('/Users/tokluo/Desktop/rows.xml', 'row/row')
+    # for pothole in data:
+    #     potholes_by_zip[pothole.findtext('zip')] += 1
+    #
+    # for zipcode, num in potholes_by_zip.most_common():
+    #     print(zipcode, num)
+    #
+
+
+    encoding.writexml()
+    encoding.hexadeimal()
+
+    func = Functions()
+    func.passargs(1,2,3,4)
+    func.keywords(1,2,3,4,foo='bar',fred='wilma')
+    func.cooloneline()
